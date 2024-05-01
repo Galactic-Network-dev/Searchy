@@ -41,6 +41,7 @@
         }
         .search-result {
             margin-bottom: 10px;
+            cursor: pointer;
         }
         .search-result-title {
             font-weight: bold;
@@ -74,12 +75,40 @@
             // Use Google search URL (not recommended, see note above)
             var searchUrl = "https://www.google.com/search?q=" + encodeURIComponent(query);
 
-            // Instead of opening a new tab, update the search results directly below the search bar
-            var searchResultsDiv = document.getElementById("searchResults");
-            searchResultsDiv.innerHTML = "<iframe src='" + searchUrl + "' style='width:100%; height:600px; border: none;'></iframe>";
+            // Fetch Google search results page
+            fetch(searchUrl)
+                .then(response => response.text())
+                .then(data => {
+                    // Extract titles, descriptions, and URLs from the search results page
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString(data, "text/html");
+                    var searchResults = doc.querySelectorAll('.tF2Cxc');
 
-            // Alternatively, you can fetch search results from a backend using an API like Google Custom Search API
-            // and display them in this page
+                    // Display search results
+                    var searchResultsDiv = document.getElementById("searchResults");
+                    searchResultsDiv.innerHTML = "";
+
+                    searchResults.forEach(result => {
+                        var titleElement = result.querySelector('h3');
+                        var title = titleElement.innerText;
+                        var urlElement = result.querySelector('.yuRUbf a');
+                        var url = urlElement.href;
+                        var descriptionElement = result.querySelector('.IsZvec');
+                        var description = descriptionElement ? descriptionElement.innerText : "";
+
+                        // Create a clickable search result item
+                        var resultItem = document.createElement("div");
+                        resultItem.classList.add("search-result");
+                        resultItem.innerHTML = "<div class='search-result-title'><a href='" + url + "' target='_blank'>" + title + "</a></div>" +
+                                                "<div class='search-result-url'>" + url + "</div>" +
+                                                "<div class='search-result-description'>" + description + "</div>";
+                        searchResultsDiv.appendChild(resultItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching search results:', error);
+                    alert("Error fetching search results. Please try again later.");
+                });
         }
     </script>
 </body>
