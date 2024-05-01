@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Browser</title>
+    <style>
+        /* Basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .search-bar {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .search-input {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .search-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .search-results {
+            margin-top: 20px;
+        }
+        .search-result {
+            margin-bottom: 10px;
+        }
+        .search-result-title {
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 5px;
+        }
+        .search-result-url {
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" class="search-input" id="searchInput" placeholder="Enter your search query">
+            <button class="search-button" onclick="search()">Search</button>
+        </div>
+        <div class="search-results" id="searchResults">
+            <!-- Search results will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        function search() {
+            var query = document.getElementById("searchInput").value.trim();
+            if (query === "") {
+                alert("Please enter a search query.");
+                return;
+            }
+
+            // Use Google search URL (not recommended, see note above)
+            var searchUrl = "https://www.google.com/search?q=" + encodeURIComponent(query);
+
+            // Open search results in a new tab
+            window.open(searchUrl, "_blank");
+
+            // Alternatively, you can fetch search results from a backend using an API like Google Custom Search API
+            // and display them in this page
+        }
+    </script>
+</body>
+</html>
